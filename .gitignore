@@ -5,3 +5,5 @@
 /.vs
 /bin
 /obj
+/GuesstimateScoringUI/bin/Debug
+/GuesstimateScoringUI/obj/Debug
