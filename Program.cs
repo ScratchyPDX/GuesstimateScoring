@@ -41,8 +41,8 @@ namespace GuesstimateScoring
             for (int i = 1; i < numberOfPlayers+1; i++)
             {
                 var player = new Player(i);
-                Console.Write($"Input the Player #{player.Id} name: ");
-                player.Name = GetString();
+                Console.Write($"Input the Player #{player.id} name: ");
+                player.name = GetString();
                 players.Add(player);
             }
             return players;
@@ -54,9 +54,9 @@ namespace GuesstimateScoring
             string currentOrFinal = areFinalScores ? "final" : "current";
             Console.WriteLine($"The {currentOrFinal} scores are");
             Console.WriteLine($"-----------------------");
-            foreach (var player in players.OrderByDescending(x => x.Score).ToList())
+            foreach (var player in players.OrderByDescending(x => x.score).ToList())
             {
-                Console.Write($"{player.Name} has {player.Score} points");
+                Console.Write($"{player.name} has {player.score} points");
                 Console.WriteLine();
             }
             Console.WriteLine();
@@ -90,7 +90,7 @@ namespace GuesstimateScoring
 
                     CalculateVariances(ref guesses, actualValue);
 
-                    DisplayPlayerGuesses(players, guesses.OrderBy(x => x.PlayerId).ToList());
+                    DisplayPlayerGuesses(players, guesses.OrderBy(x => x.playerId).ToList());
                     Console.WriteLine();
 
                     ScoreRound(ref players, guesses);
@@ -106,8 +106,8 @@ namespace GuesstimateScoring
         {
             foreach (var guess in guesses)
             {
-                var difference = Math.Abs(guess.GuessValue - actualValue);
-                guesses.Where(x => x.PlayerId == guess.PlayerId).First().OverUnderValue = difference;
+                var difference = Math.Abs(guess.guessValue - actualValue);
+                guesses.Where(x => x.playerId == guess.playerId).First().overUnderValue = difference;
             }
         }
 
@@ -130,9 +130,9 @@ namespace GuesstimateScoring
             List<Guess> guesses = new List<Guess>();
             foreach (var player in players)
             {
-                var guess = new Guess(player.Id);
-                Console.Write($"What is {player.Name}'s guess? ");
-                guess.GuessValue = GetNumber();
+                var guess = new Guess(player.id);
+                Console.Write($"What is {player.name}'s guess? ");
+                guess.guessValue = GetNumber();
                 guesses.Add(guess);
             }
             return guesses;
@@ -144,19 +144,19 @@ namespace GuesstimateScoring
             Console.WriteLine("-----------------------------");
             foreach (var guess in guesses)
             {
-                var playerName = players.Where(x => x.Id == guess.PlayerId).FirstOrDefault().Name;
-                Console.WriteLine($"{playerName}'s guess was {guess.GuessValue} with a difference of {guess.OverUnderValue}");
+                var playerName = players.Where(x => x.id == guess.playerId).FirstOrDefault().name;
+                Console.WriteLine($"{playerName}'s guess was {guess.guessValue} with a difference of {guess.overUnderValue}");
             }
         }
 
         private static void ScoreRound(ref List<Player> players, List<Guess> guesses)
         {
-            var win = guesses.OrderBy(x => x.OverUnderValue).ToList()[0].PlayerId;
-            var place = guesses.OrderBy(x => x.OverUnderValue).ToList()[1].PlayerId;
-            var show = guesses.OrderBy(x => x.OverUnderValue).ToList()[2].PlayerId;
-            players.Where(x => x.Id == win).First().Score += 5;
-            players.Where(x => x.Id == place).First().Score += 3;
-            players.Where(x => x.Id == show).First().Score += 1;
+            var win = guesses.OrderBy(x => x.overUnderValue).ToList()[0].playerId;
+            var place = guesses.OrderBy(x => x.overUnderValue).ToList()[1].playerId;
+            var show = guesses.OrderBy(x => x.overUnderValue).ToList()[2].playerId;
+            players.Where(x => x.id == win).First().score += 5;
+            players.Where(x => x.id == place).First().score += 3;
+            players.Where(x => x.id == show).First().score += 1;
         }
 
         private static void DisplayGameTitle()

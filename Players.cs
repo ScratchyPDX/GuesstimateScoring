@@ -8,14 +8,14 @@ namespace GuesstimateScoring
 {
     public class Player
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Score { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public int score { get; set; }
 
         public Player(int Id)
         {
-            this.Score = 0;
-            this.Id = Id;
+            this.score = 0;
+            this.id = Id;
         }
     }
 }
