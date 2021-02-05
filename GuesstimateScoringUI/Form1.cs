@@ -226,30 +226,15 @@ namespace GuesstimateScoringUI
             //    guesses.Where(x => x.PlayerId == guess.PlayerId).First().OverUnderValue = difference;
             //}
 
-            //var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/calc?guessValue=" + guessValue + "&actualValue=" + actualValue);
-            //httpWebRequest.ContentType = "application/json";
-            //httpWebRequest.Method = "POST";
-
             var jsonObject = JsonConvert.SerializeObject(guesses);
-
             var request = (HttpWebRequest)WebRequest.Create("https://calculatevariance-1612473730352.azurewebsites.net/calc/actual/" + actualValue);
-
             var data = Encoding.Default.GetBytes(jsonObject); // note: choose appropriate encoding
-
             request.Method = "POST";
             request.ContentType = "application/json"; // place MIME type here
             request.ContentLength = data.Length;
-
             var newStream = request.GetRequestStream(); // get a ref to the request body so it can be modified
             newStream.Write(data, 0, data.Length);
             newStream.Close();
-
-
-
-            //using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            //{
-            //    streamWriter.Write(jsonObject);
-            //}
 
             string result = string.Empty;
             var httpResponse = (HttpWebResponse)request.GetResponse();
@@ -260,7 +245,6 @@ namespace GuesstimateScoringUI
 
             List<Guess> responseGuesses = JsonConvert.DeserializeObject<List<Guess>>(result);
             return responseGuesses;
-
         }
 
         private string DisplayPlayerGuesses(List<Player> players, List<Guess> guesses)
