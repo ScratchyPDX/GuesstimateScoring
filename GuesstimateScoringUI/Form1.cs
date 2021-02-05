@@ -228,11 +228,11 @@ namespace GuesstimateScoringUI
 
             var jsonObject = JsonConvert.SerializeObject(guesses);
             var request = (HttpWebRequest)WebRequest.Create("https://calculatevariance-1612473730352.azurewebsites.net/calc/actual/" + actualValue);
-            var data = Encoding.Default.GetBytes(jsonObject); // note: choose appropriate encoding
+            var data = Encoding.Default.GetBytes(jsonObject);
             request.Method = "POST";
-            request.ContentType = "application/json"; // place MIME type here
+            request.ContentType = "application/json";
             request.ContentLength = data.Length;
-            var newStream = request.GetRequestStream(); // get a ref to the request body so it can be modified
+            var newStream = request.GetRequestStream();
             newStream.Write(data, 0, data.Length);
             newStream.Close();
 
