@@ -1,9 +1,20 @@
 package com.scratchypdx.guesstimate.scoreround.model;
 
-public class Player {
+import com.sun.istack.NotNull;
+import com.sun.istack.Nullable;
+import io.swagger.annotations.ApiModelProperty;
+import org.springframework.beans.factory.annotation.Value;
 
+public class Player {
+    @Nullable
+    @ApiModelProperty("Auto-populated in DB")
     private int id;
+
+    @NotNull
     private String name;
+
+    @Nullable
+    @ApiModelProperty("Optional calculated value")
     private int score;
 
     public Player() {}

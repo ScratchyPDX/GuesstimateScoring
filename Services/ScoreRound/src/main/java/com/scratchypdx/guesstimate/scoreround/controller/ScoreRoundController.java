@@ -15,8 +15,8 @@ public class ScoreRoundController {
     @Autowired
     private ScoreRoundService scoreRoundService;
 
-    @GetMapping("/player/Id/{playerId}")
-    public Player getPlayer(@PathVariable("actualValue") Integer playerId) {
+    @GetMapping("/player/Id/{id}")
+    public Player getPlayer(@PathVariable("id") Integer playerId) {
         Player player = new Player();
         return scoreRoundService.getPlayer(playerId);
     }
@@ -27,19 +27,18 @@ public class ScoreRoundController {
     }
 
     @PostMapping("/player")
-    public Player addPlayer(@RequestBody String player) throws JsonProcessingException {
-        return scoreRoundService.addPlayer(buildPlayerFromJsonString(player));
+    public Player addPlayer(@RequestBody Player player) {
+        return scoreRoundService.addPlayer(player);
     }
 
-    @PutMapping("/player/score")
-    public ArrayList<Player> scoreRound(@RequestBody String guesses) throws JsonProcessingException {
-        ArrayList<Guess> guessArrayList = buildGuessesFromJsonString(guesses);
-        return scoreRoundService.scoreRound(guessArrayList);
+    @PutMapping("/player/score/all")
+    public ArrayList<Player> scoreRound(@RequestBody ArrayList<Guess> guesses) {
+        return scoreRoundService.scoreRound(guesses);
     }
 
-    @DeleteMapping("/player")
-    public void deletePlayer(@RequestBody String player) throws JsonProcessingException {
-        scoreRoundService.deletePlayer(buildPlayerFromJsonString(player));
+    @DeleteMapping("/player/{id}")
+    public void deletePlayer(@PathVariable("id") Integer playerId)  {
+        scoreRoundService.deletePlayer(playerId);
     }
 
     @DeleteMapping("/player/all")

@@ -10,8 +10,7 @@ public interface ScoreRoundService {
     public Player getPlayer(int id);
     public ArrayList<Player> getPlayers();
     public Player addPlayer(Player player);
-    public Player updatePlayerScore(Player player);
-    public void deletePlayer(Player player);
+    public void deletePlayer(Integer id);
     public void deleteAllPlayers();
-    public ArrayList<Player> scoreRound(ArrayList<Guess> guesses);
+    public ArrayList<Player> scoreRound(ArrayList<Guess> Guesses);
 }

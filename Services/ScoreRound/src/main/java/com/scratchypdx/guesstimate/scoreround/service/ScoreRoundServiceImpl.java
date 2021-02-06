@@ -31,13 +31,8 @@ public class ScoreRoundServiceImpl implements ScoreRoundService {
     }
 
     @Override
-    public Player updatePlayerScore(Player player) {
-        return playerRepository.updatePlayerScore(player);
-    }
-
-    @Override
-    public void deletePlayer(Player player) {
-        playerRepository.deletePlayer(player);
+    public void deletePlayer(Integer id) {
+        playerRepository.deletePlayer(id);
     }
 
     @Override
@@ -47,7 +42,6 @@ public class ScoreRoundServiceImpl implements ScoreRoundService {
 
     @Override
     public ArrayList<Player> scoreRound(ArrayList<Guess> guesses) {
-
         Collections.sort(guesses, new Comparator<Guess>() {
             @Override
             public int compare(Guess z1, Guess z2) {
@@ -58,10 +52,14 @@ public class ScoreRoundServiceImpl implements ScoreRoundService {
                 return 0;
             }
         });
-        playerRepository.updatePlayerScore(playerRepository.getPlayer(guesses.get(0).getPlayerId()));
-        playerRepository.updatePlayerScore(playerRepository.getPlayer(guesses.get(1).getPlayerId()));
-        playerRepository.updatePlayerScore(playerRepository.getPlayer(guesses.get(2).getPlayerId()));
+        playerRepository.updatePlayerScore(guesses.get(0).getPlayerId(), 5);
+        playerRepository.updatePlayerScore(guesses.get(1).getPlayerId(), 3);
+        playerRepository.updatePlayerScore(guesses.get(2).getPlayerId(), 1);
 
         return playerRepository.getPlayers();
+    }
+
+    private void updatePlayerScore(Integer id, Integer score) {
+        playerRepository.updatePlayerScore(id, score);
     }
 }

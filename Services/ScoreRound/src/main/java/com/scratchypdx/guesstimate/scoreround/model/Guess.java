@@ -1,9 +1,19 @@
 package com.scratchypdx.guesstimate.scoreround.model;
 
+import com.sun.istack.NotNull;
+import io.swagger.annotations.ApiModelProperty;
+import org.springframework.data.annotation.ReadOnlyProperty;
+
 public class Guess {
 
+    @NotNull
+    @ReadOnlyProperty
+    @ApiModelProperty("Auto-populated in DB")
     private int playerId;
+    @NotNull
     private int guessValue;
+    @NotNull
+    @ApiModelProperty("Optional calculated value")
     private int overUnderValue;
 
     public int getPlayerId() {
