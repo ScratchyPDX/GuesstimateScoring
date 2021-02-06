@@ -40,3 +40,4 @@ build/
 **/.mvn
 packages/
 **/bin
+Services/ScoreRound/.data/
