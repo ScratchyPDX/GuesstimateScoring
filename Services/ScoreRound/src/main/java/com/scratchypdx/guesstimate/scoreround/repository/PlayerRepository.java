@@ -10,6 +10,7 @@ public interface PlayerRepository {
     public Player getPlayer(int id);
     public Player getPlayer(String name);
     public ArrayList<Player> getPlayers();
+    public Player addPlayer(String playerName);
     public Player addPlayer(Player player);
     public Player updatePlayerScore(Integer id, Integer score);
     public void deletePlayer(Integer id);

@@ -26,6 +26,11 @@ public class ScoreRoundServiceImpl implements ScoreRoundService {
     }
 
     @Override
+    public Player addPlayer(String playerName) {
+        return playerRepository.addPlayer(playerName);
+    }
+
+    @Override
     public Player addPlayer(Player player) {
         return playerRepository.addPlayer(player);
     }
@@ -52,10 +57,20 @@ public class ScoreRoundServiceImpl implements ScoreRoundService {
                 return 0;
             }
         });
-        playerRepository.updatePlayerScore(guesses.get(0).getPlayerId(), 5);
-        playerRepository.updatePlayerScore(guesses.get(1).getPlayerId(), 3);
-        playerRepository.updatePlayerScore(guesses.get(2).getPlayerId(), 1);
 
+        for(int x = 0; x < 3; x++) {
+            int valueToAdd = 5;
+            if(x == 1) {
+                valueToAdd = 3;
+            }
+            else if(x == 2) {
+                valueToAdd = 1;
+            }
+
+            int playerId = guesses.get(x).getPlayerId();
+            int playerCurrentScore = playerRepository.getPlayer(playerId).getScore();
+            playerRepository.updatePlayerScore(playerId, playerCurrentScore += valueToAdd);
+        }
         return playerRepository.getPlayers();
     }
 

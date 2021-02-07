@@ -9,6 +9,7 @@ public interface ScoreRoundService {
 
     public Player getPlayer(int id);
     public ArrayList<Player> getPlayers();
+    public Player addPlayer(String playerNme);
     public Player addPlayer(Player player);
     public void deletePlayer(Integer id);
     public void deleteAllPlayers();

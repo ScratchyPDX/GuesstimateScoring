@@ -26,6 +26,11 @@ public class ScoreRoundController {
         return scoreRoundService.getPlayers();
     }
 
+    @PostMapping("/player/{name}")
+    public Player addPlayer(@PathVariable String name) {
+        return scoreRoundService.addPlayer(name);
+    }
+
     @PostMapping("/player")
     public Player addPlayer(@RequestBody Player player) {
         return scoreRoundService.addPlayer(player);

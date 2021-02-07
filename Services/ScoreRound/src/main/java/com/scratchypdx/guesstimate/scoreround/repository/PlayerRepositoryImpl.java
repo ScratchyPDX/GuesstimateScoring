@@ -51,6 +51,14 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     }
 
     @Override
+    public Player addPlayer(String playerName) {
+        JdbcTemplate template = new JdbcTemplate(dataSource);
+        template.update("INSERT INTO players.players (name) VALUES (?)",
+                playerName);
+        return getPlayer(playerName);
+    }
+
+    @Override
     public Player addPlayer(Player player) {
         JdbcTemplate template = new JdbcTemplate(dataSource);
         template.update("INSERT INTO players.players (name, score) VALUES (?,?)",
