@@ -53,8 +53,9 @@
         <version>1.8.0</version>
         <configuration>
           <schemaVersion>V2</schemaVersion>
-          <resourceGroup>calculatevariance-1612473730352-rg</resourceGroup>
-          <appName>calculatevariance-1612473730352</appName>
+          <appServicePlanName>scratchy-calculatevariance-121608-sp</appServicePlanName>
+          <resourceGroup>scratchy-calculatevariance-121608-rg</resourceGroup>
+          <appName>scratchy-calculatevariance-121608-app</appName>
           <pricingTier>P1v2</pricingTier>
           <region>westus</region>
           <runtime>
