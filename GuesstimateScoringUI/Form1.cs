@@ -32,11 +32,6 @@ namespace GuesstimateScoringUI
             actualValueLabel.Visible = false;
             roundLabel.Visible = false;
             roundLabel.Text = $"Round #1";
-
-            // TODO remove these lines before using in Release
-            nameOfPlayerTextBox1.Text = "David";
-            nameOfPlayerTextBox2.Text = "Sue";
-            nameOfPlayerTextBox3.Text = "Katie";
         }
 
         private void gameOverButton_Click(object sender, EventArgs e)
@@ -143,12 +138,6 @@ namespace GuesstimateScoringUI
             PlayerFieldsLocked(true);
             GetPlayersList(Convert.ToInt32(numericUpDown.Value));
             guessValueTextBox1.Focus();
-
-            // TODO remove these lines before using in Release
-            guessValueTextBox1.Text = "2";
-            guessValueTextBox2.Text = "3";
-            guessValueTextBox3.Text = "7";
-            actualValueTextBox.Text = "6";
         }
 
         private List<Player> GetPlayersList(int numberOfPlayers)
