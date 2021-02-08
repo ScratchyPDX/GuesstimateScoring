@@ -16,7 +16,8 @@ namespace GuesstimateScoringUI
         List<Player> players = new List<Player>();
         int Round = 1;
 
-        const bool LOCALHOST = true;
+        const bool LOCALCALC = false;
+        const bool LOCALSCORE = false;
 
         public Form1()
         {
@@ -152,7 +153,7 @@ namespace GuesstimateScoringUI
 
         private List<Player> GetPlayersList(int numberOfPlayers)
         {
-            var url = LOCALHOST ? $"http://localhost:8081/player" : $"https://scoreround-1612473730352.azurewebsites.net/player";
+            var url = LOCALSCORE ? $"http://localhost:8081/player" : $"https://scratchy-scoreround-121608-app.azurewebsites.net/player";
 
             if (nameOfPlayerTextBox1.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox1.Text}", "POST"); }
             if (nameOfPlayerTextBox2.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox2.Text}", "POST"); }
@@ -232,7 +233,7 @@ namespace GuesstimateScoringUI
             //    guesses.Where(x => x.PlayerId == guess.PlayerId).First().OverUnderValue = difference;
             //}
 
-            var url = LOCALHOST ? $"http://localhost:8080/calc/actual/{actualValue}" : $"https://calculatevariance-1612473730352.azurewebsites.net/calc/actual/{actualValue}";
+            var url = LOCALCALC ? $"http://localhost:8080/calc/actual/{actualValue}" : $"https://scratchy-calculatevariance-121608-app.azurewebsites.net/calc/actual/{actualValue}";
             var result = MakeHttpRequest(url, "POST", JsonConvert.SerializeObject(guesses));
             var responseGuesses = JsonConvert.DeserializeObject<List<Guess>>(result);
             return responseGuesses;
@@ -260,7 +261,7 @@ namespace GuesstimateScoringUI
             //players.Where(x => x.id == place).First().score += 3;
             //players.Where(x => x.id == show).First().score += 1;
 
-            var url = LOCALHOST ? $"http://localhost:8081/player/score/all" : $"https://scoreround-1612473730352.azurewebsites.net/player/score/all";
+            var url = LOCALSCORE ? $"http://localhost:8081/player/score/all" : $"https://scratchy-scoreround-121608-app.azurewebsites.net/player/score/all";
             var result = MakeHttpRequest(url, "PUT", JsonConvert.SerializeObject(guesses));
             var players = JsonConvert.DeserializeObject<List<Player>>(result);
             return players;
@@ -305,7 +306,7 @@ namespace GuesstimateScoringUI
 
         private void closeButton_Click(object sender, EventArgs e)
         {
-            var url = LOCALHOST ? $"http://localhost:8081/player/all" : $"https://scoreround-1612473730352.azurewebsites.net/player/all";
+            var url = LOCALSCORE ? $"http://localhost:8081/player/all" : $"https://scratchy-scoreround-121608-app.azurewebsites.net/player/all";
             MakeHttpRequest(url, "DELETE");
             Close();
         }
@@ -314,7 +315,7 @@ namespace GuesstimateScoringUI
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = httpMethod;
-
+            request.ContentLength = 0;
             if (jsonString != null) {
                 var data = Encoding.Default.GetBytes(jsonString);
                 request.ContentType = "application/json";
