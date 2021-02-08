@@ -1,0 +1,35 @@
+[
+  {
+    "guessValue": 2,
+    "overUnderValue": 3,
+    "playerId": 6
+  },
+  {
+    "guessValue": 3,
+    "overUnderValue": 2,
+    "playerId": 7
+  },
+  {
+    "guessValue": 7,
+    "overUnderValue": 1,
+    "playerId": 8
+  }
+]
+
+{
+  "id": 0,
+  "name": "David",
+  "score": 0
+}
+
+{
+  "id": 0,
+  "name": "Sue",
+  "score": 0
+}
+
+{
+  "id": 0,
+  "name": "Katie",
+  "score": 0
+}

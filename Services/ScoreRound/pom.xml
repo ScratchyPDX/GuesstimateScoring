@@ -31,6 +31,7 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
+
     </dependency>
 
     <dependency>
@@ -63,8 +64,9 @@
         <version>1.8.0</version>
         <configuration>
           <schemaVersion>V2</schemaVersion>
-          <resourceGroup>scoreround-1612473730352-rg</resourceGroup>
-          <appName>scoreround-1612473730352</appName>
+          <appServicePlanName>scratchy-scoreround-121608-sp</appServicePlanName>
+          <resourceGroup>scratchy-scoreround-121608-rg</resourceGroup>
+          <appName>scratchy-scoreround-121608-app</appName>
           <pricingTier>P1v2</pricingTier>
           <region>westus</region>
           <runtime>

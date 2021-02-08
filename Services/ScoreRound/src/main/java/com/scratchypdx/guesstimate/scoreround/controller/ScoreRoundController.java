@@ -1,13 +1,11 @@
 package com.scratchypdx.guesstimate.scoreround.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.scratchypdx.guesstimate.scoreround.model.Guess;
 import com.scratchypdx.guesstimate.scoreround.model.Player;
 import com.scratchypdx.guesstimate.scoreround.service.ScoreRoundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
-import static com.scratchypdx.guesstimate.scoreround.util.HelperUtils.*;
 
 @RestController
 public class ScoreRoundController {
