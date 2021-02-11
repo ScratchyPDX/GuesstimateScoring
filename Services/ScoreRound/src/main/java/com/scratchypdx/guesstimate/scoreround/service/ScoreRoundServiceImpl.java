@@ -58,9 +58,12 @@ public class ScoreRoundServiceImpl implements ScoreRoundService {
             }
         });
 
-        for(int x = 0; x < 3; x++) {
-            int valueToAdd = 5;
-            if(x == 1) {
+        for(int x = 0; x < guesses.size(); x++) {
+            int valueToAdd = 0;
+            if(x == 0) {
+                valueToAdd = 5;
+            }
+            else if(x == 1) {
                 valueToAdd = 3;
             }
             else if(x == 2) {
