@@ -222,7 +222,7 @@ namespace GuesstimateScoringUI
             //    guesses.Where(x => x.PlayerId == guess.PlayerId).First().OverUnderValue = difference;
             //}
 
-            var url = LOCALCALC ? $"http://localhost:8080/calc/actual/{actualValue}" : $"https://scratchy-calculatevariance-121608-app.azurewebsites.net/calc/actual/{actualValue}";
+            var url = LOCALCALC ? $"http://localhost:8080/calc/actual/{actualValue}" : $"https://scratchy-calc-guess-121608-func-app.azurewebsites.net/api/guess/{actualValue}";
             var result = MakeHttpRequest(url, "POST", JsonConvert.SerializeObject(guesses));
             var responseGuesses = JsonConvert.DeserializeObject<List<Guess>>(result);
             return responseGuesses;
@@ -295,8 +295,6 @@ namespace GuesstimateScoringUI
 
         private void closeButton_Click(object sender, EventArgs e)
         {
-            var url = LOCALSCORE ? $"http://localhost:8081/player/all" : $"https://scratchy-scoreround-121608-app.azurewebsites.net/player/all";
-            MakeHttpRequest(url, "DELETE");
             Close();
         }
 
@@ -321,6 +319,12 @@ namespace GuesstimateScoringUI
                 result = streamReader.ReadToEnd();
             }
             return result;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var url = LOCALSCORE ? $"http://localhost:8081/player/all" : $"https://scratchy-scoreround-121608-app.azurewebsites.net/player/all";
+            MakeHttpRequest(url, "DELETE");
         }
     }
     public static class MyExtensions
