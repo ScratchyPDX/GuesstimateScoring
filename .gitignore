@@ -41,3 +41,6 @@ build/
 packages/
 **/bin
 Services/ScoreRound/.data/
+Services/CalcFunction/mvnw
+Services/CalcFunction/mvnw.cmd
+Services/CalcFunction/calc/.gitignore
