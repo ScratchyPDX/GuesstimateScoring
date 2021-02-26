@@ -10,21 +10,13 @@ class MyFunctionTest {
 
     @Test
     public void testHttpTriggerJava() throws Exception {
-//        @SuppressWarnings("unchecked")
-//        final HttpRequestMessage<Optional<String>> req = mock(HttpRequestMessage.class);
-//        final GuessService guessService = mock(GuessService.class);
-//
-//        final Map<String, Integer> queryParams = new HashMap<>();
-//        queryParams.put("actualValue", 123);
-//
-//
-//
-//        doReturn(queryParams).when(req).getQueryParameters();
-//
-//
-//
-//
-//
+        @SuppressWarnings("unchecked")
+        final HttpRequestMessage<Optional<String>> req = mock(HttpRequestMessage.class);
+        final GuessService guessService = mock(GuessService.class);
 
+        final Map<String, Integer> queryParams = new HashMap<>();
+        queryParams.put("actualValue", 123);
+
+        doReturn(queryParams).when(req).getQueryParameters();
     }
 }
