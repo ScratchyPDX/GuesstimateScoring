@@ -26,7 +26,7 @@ public class Function {
         int actualValue = Integer.parseInt(parameters[3]);
         GuessService guessService = new GuessServiceImpl();
         ArrayList<Guess> guesses = request.getBody();
-        ArrayList<Guess> results = guessService.calculateVariances(guesses, actualValue);
+        ArrayList<Guess> results = guessService.updateAllGuessesWithVarianceValue(guesses, actualValue);
         return request.createResponseBuilder(HttpStatus.OK).body(results).build();
     }
 }

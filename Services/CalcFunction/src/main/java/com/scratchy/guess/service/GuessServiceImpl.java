@@ -5,28 +5,30 @@ import java.util.ArrayList;
 
 public class GuessServiceImpl implements GuessService{
     @Override
-    public Integer calculateVariance(Integer guessValue, Integer actualValue) {
-        Integer difference = Math.abs(guessValue - actualValue);
-        //System.out.println("calculateVariance: difference=" + difference);
-        return difference;
+    public Integer getGuessVarianceValue(Integer guessValue, Integer actualValue) {
+        return getGuessDifferenceFromActualValue(actualValue, guessValue);
     }
 
     @Override
-    public ArrayList<Guess> calculateVariances(ArrayList<Guess> guesses, int actualValue) {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        ObjectReader objectReader = objectMapper.reader().forType(new TypeReference<ArrayList<Guess>>(){});
-//        ArrayList<Guess> guessesArrayList = objectReader.readValue(guesses);
-
+    public ArrayList<Guess> updateAllGuessesWithVarianceValue(ArrayList<Guess> guesses, int actualValue) {
         ArrayList<Guess> updatedGuesses = new ArrayList<>();
-
-        for (int index = 0; index < guesses.size(); index++) {
-            Guess guess = new Guess();
-            int difference = Math.abs(guesses.get(index).getGuessValue() - actualValue);
-            guess.setPlayerId(guesses.get(index).getPlayerId());
-            guess.setGuessValue(guesses.get(index).getGuessValue());
-            guess.setOverUnderValue(difference);
-            updatedGuesses.add(guess);
+        for (Guess guess: guesses) {
+            int difference = getGuessDifferenceFromActualValue(actualValue, guess.getGuessValue());
+            Guess newGuess = updateGuessWithVarianceValue(guess, difference);
+            updatedGuesses.add(newGuess);
         }
         return updatedGuesses;
+    }
+
+    int getGuessDifferenceFromActualValue(int actualValue, int guessValue) {
+        return Math.abs(guessValue - actualValue);
+    }
+
+    Guess updateGuessWithVarianceValue(Guess guess, int difference) {
+        Guess guessObj = new Guess();
+        guessObj.setPlayerId(guess.getPlayerId());
+        guessObj.setGuessValue(guess.getGuessValue());
+        guessObj.setOverUnderValue(difference);
+        return guessObj;
     }
 }
