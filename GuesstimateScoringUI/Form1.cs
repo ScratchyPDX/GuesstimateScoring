@@ -1,13 +1,13 @@
-﻿using System;
+﻿using GuesstimateScoring;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using GuesstimateScoring;
 
 namespace GuesstimateScoringUI
 {
@@ -15,6 +15,9 @@ namespace GuesstimateScoringUI
     {
         List<Player> players = new List<Player>();
         int Round = 1;
+
+        const bool LOCALCALC = false;
+        const bool LOCALSCORE = false;
 
         public Form1()
         {
@@ -139,111 +142,126 @@ namespace GuesstimateScoringUI
 
         private List<Player> GetPlayersList(int numberOfPlayers)
         {
-            for (int i = 1; i < numberOfPlayers + 1; i++)
-            {
-                var player = new Player(i);
-                if (i == 1) { player.Name = nameOfPlayerTextBox1.Text; }
-                if (i == 2) { player.Name = nameOfPlayerTextBox2.Text; }
-                if (i == 3) { player.Name = nameOfPlayerTextBox3.Text; }
-                if (i == 4) { player.Name = nameOfPlayerTextBox4.Text; }
-                if (i == 5) { player.Name = nameOfPlayerTextBox5.Text; }
-                if (i == 6) { player.Name = nameOfPlayerTextBox6.Text; }
-                if (i == 7) { player.Name = nameOfPlayerTextBox7.Text; }
-                if (i == 8) { player.Name = nameOfPlayerTextBox8.Text; }
-                if (i == 9) { player.Name = nameOfPlayerTextBox9.Text; }
-                if (i == 10) { player.Name = nameOfPlayerTextBox10.Text; }
-                if (i == 11) { player.Name = nameOfPlayerTextBox11.Text; }
-                if (i == 12) { player.Name = nameOfPlayerTextBox12.Text; }
-                if (i == 13) { player.Name = nameOfPlayerTextBox13.Text; }
-                if (i == 14) { player.Name = nameOfPlayerTextBox14.Text; }
-                if (i == 15) { player.Name = nameOfPlayerTextBox15.Text; }
-                players.Add(player);
-            }
+            var url = LOCALSCORE ? $"http://localhost:8081/player" : $"https://scratchy-scoreround-121608-app.azurewebsites.net/player";
+
+            if (nameOfPlayerTextBox1.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox1.Text}", "POST"); }
+            if (nameOfPlayerTextBox2.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox2.Text}", "POST"); }
+            if (nameOfPlayerTextBox3.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox3.Text}", "POST"); }
+            if (nameOfPlayerTextBox4.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox4.Text}", "POST"); }
+            if (nameOfPlayerTextBox5.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox5.Text}", "POST"); }
+            if (nameOfPlayerTextBox6.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox6.Text}", "POST"); }
+            if (nameOfPlayerTextBox7.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox7.Text}", "POST"); }
+            if (nameOfPlayerTextBox8.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox8.Text}", "POST"); }
+            if (nameOfPlayerTextBox9.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox9.Text}", "POST"); }
+            if (nameOfPlayerTextBox10.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox10.Text}", "POST"); }
+            if (nameOfPlayerTextBox11.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox11.Text}", "POST"); }
+            if (nameOfPlayerTextBox12.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox12.Text}", "POST"); }
+            if (nameOfPlayerTextBox13.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox13.Text}", "POST"); }
+            if (nameOfPlayerTextBox14.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox14.Text}", "POST"); }
+            if (nameOfPlayerTextBox15.Text != string.Empty) { MakeHttpRequest($"{url}/{nameOfPlayerTextBox15.Text}", "POST"); }
+
+            var result = MakeHttpRequest($"{url}/{nameOfPlayerTextBox15.Text}", "GET");
+            players = JsonConvert.DeserializeObject<List<Player>>(result);
             return players;
         }
 
         private void submitButton_Click(object sender, EventArgs e)
         {
-            List<Guess> guesses = new List<Guess>();
-            GetPlayerGuesses(players, ref guesses);
-            CalculateVariances(ref guesses, Convert.ToInt32(actualValueTextBox.Text.Replace(",", "")));
+            var guesses = GetPlayerGuesses(players);
+            guesses = CalculateVariances(guesses, Convert.ToInt32(actualValueTextBox.Text.Replace(",", "")));
             differenceRichTextBox.Text = DisplayPlayerGuesses(players, guesses);
-            ScoreRound(ref players, guesses);
-            scoresRichTextBox.Text = PlayerScores(players);
+            players = ScoreRound(guesses);
+            scoresRichTextBox.Text = DisplayPlayerScores(players);
             if (MessageBox.Show("Play another round?", "Round complete", MessageBoxButtons.YesNo) == DialogResult.Yes) 
             {
                 ClearGuesses();
                 roundLabel.Text = $"Round #{++Round}";
                 guessValueTextBox1.Focus();
             }
-            groupBox1.Enabled = false;
-            tableLayoutPanel.Enabled = false;
-            closeButton.Visible = true;
+            else
+            {
+                groupBox1.Enabled = false;
+                tableLayoutPanel.Enabled = false;
+                closeButton.Visible = true;
+            }
         }
 
-        private void GetPlayerGuesses(List<Player> players, ref List<Guess> guesses)
+        private List<Guess> GetPlayerGuesses(List<Player> players)
         {
             int i = 0;
+            List<Guess> guesses = new List<Guess>();
             foreach (var player in players)
             {
-                var guess = new Guess(player.Id);
-                if (i == 0) { guess.GuessValue = Convert.ToInt32(guessValueTextBox1.Text.Replace(",", "")); }
-                if (i == 1) { guess.GuessValue = Convert.ToInt32(guessValueTextBox2.Text.Replace(",", "")); }
-                if (i == 2) { guess.GuessValue = Convert.ToInt32(guessValueTextBox3.Text.Replace(",", "")); }
-                if (i == 3) { guess.GuessValue = Convert.ToInt32(guessValueTextBox4.Text.Replace(",", "")); }
-                if (i == 4) { guess.GuessValue = Convert.ToInt32(guessValueTextBox5.Text.Replace(",", "")); }
-                if (i == 5) { guess.GuessValue = Convert.ToInt32(guessValueTextBox6.Text.Replace(",", "")); }
-                if (i == 6) { guess.GuessValue = Convert.ToInt32(guessValueTextBox7.Text.Replace(",", "")); }
-                if (i == 7) { guess.GuessValue = Convert.ToInt32(guessValueTextBox8.Text.Replace(",", "")); }
-                if (i == 8) { guess.GuessValue = Convert.ToInt32(guessValueTextBox9.Text.Replace(",", "")); }
-                if (i == 9) { guess.GuessValue = Convert.ToInt32(guessValueTextBox10.Text.Replace(",", "")); }
-                if (i == 10) { guess.GuessValue = Convert.ToInt32(guessValueTextBox11.Text.Replace(",", "")); }
-                if (i == 11) { guess.GuessValue = Convert.ToInt32(guessValueTextBox12.Text.Replace(",", "")); }
-                if (i == 12) { guess.GuessValue = Convert.ToInt32(guessValueTextBox13.Text.Replace(",", "")); }
-                if (i == 13) { guess.GuessValue = Convert.ToInt32(guessValueTextBox14.Text.Replace(",", "")); }
-                if (i == 14) { guess.GuessValue = Convert.ToInt32(guessValueTextBox15.Text.Replace(",", "")); }
+                var guess = new Guess(player.id);
+                if (i == 0) { guess.guessValue = Convert.ToInt32(guessValueTextBox1.Text.Replace(",", "")); }
+                if (i == 1) { guess.guessValue = Convert.ToInt32(guessValueTextBox2.Text.Replace(",", "")); }
+                if (i == 2) { guess.guessValue = Convert.ToInt32(guessValueTextBox3.Text.Replace(",", "")); }
+                if (i == 3) { guess.guessValue = Convert.ToInt32(guessValueTextBox4.Text.Replace(",", "")); }
+                if (i == 4) { guess.guessValue = Convert.ToInt32(guessValueTextBox5.Text.Replace(",", "")); }
+                if (i == 5) { guess.guessValue = Convert.ToInt32(guessValueTextBox6.Text.Replace(",", "")); }
+                if (i == 6) { guess.guessValue = Convert.ToInt32(guessValueTextBox7.Text.Replace(",", "")); }
+                if (i == 7) { guess.guessValue = Convert.ToInt32(guessValueTextBox8.Text.Replace(",", "")); }
+                if (i == 8) { guess.guessValue = Convert.ToInt32(guessValueTextBox9.Text.Replace(",", "")); }
+                if (i == 9) { guess.guessValue = Convert.ToInt32(guessValueTextBox10.Text.Replace(",", "")); }
+                if (i == 10) { guess.guessValue = Convert.ToInt32(guessValueTextBox11.Text.Replace(",", "")); }
+                if (i == 11) { guess.guessValue = Convert.ToInt32(guessValueTextBox12.Text.Replace(",", "")); }
+                if (i == 12) { guess.guessValue = Convert.ToInt32(guessValueTextBox13.Text.Replace(",", "")); }
+                if (i == 13) { guess.guessValue = Convert.ToInt32(guessValueTextBox14.Text.Replace(",", "")); }
+                if (i == 14) { guess.guessValue = Convert.ToInt32(guessValueTextBox15.Text.Replace(",", "")); }
                 guesses.Add(guess);
                 i++;
             }
+            return guesses;
         }
 
-        private void CalculateVariances(ref List<Guess> guesses, int actualValue)
+        private List<Guess> CalculateVariances(List<Guess> guesses, int actualValue)
         {
-            foreach (var guess in guesses)
-            {
-                var difference = Math.Abs(guess.GuessValue - actualValue);
-                guesses.Where(x => x.PlayerId == guess.PlayerId).First().OverUnderValue = difference;
-            }
+            //foreach (var guess in guesses)
+            //{
+            //    var difference = Math.Abs(guess.GuessValue - actualValue);
+            //    guesses.Where(x => x.PlayerId == guess.PlayerId).First().OverUnderValue = difference;
+            //}
+
+            var url = LOCALCALC ? $"http://localhost:8080/calc/actual/{actualValue}" : $"https://scratchy-calc-guess-121608-func-app.azurewebsites.net/api/guess/{actualValue}";
+            var result = MakeHttpRequest(url, "POST", JsonConvert.SerializeObject(guesses));
+            var responseGuesses = JsonConvert.DeserializeObject<List<Guess>>(result);
+            return responseGuesses;
         }
 
         private string DisplayPlayerGuesses(List<Player> players, List<Guess> guesses)
         {
             string results = string.Empty;
-            var guessesList = guesses.OrderBy(x => x.OverUnderValue).ToList();
+            var guessesList = guesses.OrderBy(x => x.overUnderValue).ToList();
             foreach (var guess in guessesList)
             {
-                var playerName = players.Where(x => x.Id == guess.PlayerId).FirstOrDefault().Name;
-                results += $"{playerName} \t {String.Format("{0:n0}",guess.OverUnderValue)}\n";
+                var playerName = players.Where(x => x.id == guess.playerId).FirstOrDefault().name;
+                results += $"{playerName} \t {String.Format("{0:n0}",guess.overUnderValue)}\n";
             }
             return results;
         }
 
-        private void ScoreRound(ref List<Player> players, List<Guess> guesses)
+        //private void ScoreRound(ref List<Player> players, List<Guess> guesses)
+        private List<Player> ScoreRound(List<Guess> guesses)
         {
-            var win = guesses.OrderBy(x => x.OverUnderValue).ToList()[0].PlayerId;
-            var place = guesses.OrderBy(x => x.OverUnderValue).ToList()[1].PlayerId;
-            var show = guesses.OrderBy(x => x.OverUnderValue).ToList()[2].PlayerId;
-            players.Where(x => x.Id == win).First().Score += 5;
-            players.Where(x => x.Id == place).First().Score += 3;
-            players.Where(x => x.Id == show).First().Score += 1;
+            //var win = guesses.OrderBy(x => x.overUnderValue).ToList()[0].playerId;
+            //var place = guesses.OrderBy(x => x.overUnderValue).ToList()[1].playerId;
+            //var show = guesses.OrderBy(x => x.overUnderValue).ToList()[2].playerId;
+            //players.Where(x => x.id == win).First().score += 5;
+            //players.Where(x => x.id == place).First().score += 3;
+            //players.Where(x => x.id == show).First().score += 1;
+
+            var url = LOCALSCORE ? $"http://localhost:8081/player/score/all" : $"https://scratchy-scoreround-121608-app.azurewebsites.net/player/score/all";
+            var result = MakeHttpRequest(url, "PUT", JsonConvert.SerializeObject(guesses));
+            var players = JsonConvert.DeserializeObject<List<Player>>(result);
+            return players;
         }
 
-        private string PlayerScores(List<Player> players)
+        private string DisplayPlayerScores(List<Player> players)
         {
             string results = string.Empty;
-            foreach (var player in players.OrderByDescending(x => x.Score).ToList())
+            foreach (var player in players.OrderByDescending(x => x.score).ToList())
             {
-                results += $"{player.Name} \t {string.Format("{0:n0}", player.Score)}\n";
+                results += $"{player.name} \t {string.Format("{0:n0}", player.score)}\n";
             }
             return results;
         }
@@ -279,6 +297,35 @@ namespace GuesstimateScoringUI
         {
             Close();
         }
+
+        private string MakeHttpRequest(string url, string httpMethod, string jsonString = null)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = httpMethod;
+            request.ContentLength = 0;
+            if (jsonString != null) {
+                var data = Encoding.Default.GetBytes(jsonString);
+                request.ContentType = "application/json";
+                request.ContentLength = data.Length;
+                var newStream = request.GetRequestStream();
+                newStream.Write(data, 0, data.Length);
+                newStream.Close();
+            }
+
+            string result = string.Empty;
+            var httpResponse = (HttpWebResponse)request.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                result = streamReader.ReadToEnd();
+            }
+            return result;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var url = LOCALSCORE ? $"http://localhost:8081/player/all" : $"https://scratchy-scoreround-121608-app.azurewebsites.net/player/all";
+            MakeHttpRequest(url, "DELETE");
+        }
     }
     public static class MyExtensions
     {
@@ -293,5 +340,6 @@ namespace GuesstimateScoringUI
             }
             return result;
         }
+
     }
 }

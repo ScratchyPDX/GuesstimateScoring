@@ -1,9 +1,46 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-/.vs
-/bin
-/obj
-/GuesstimateScoringUI/bin/Debug
-/GuesstimateScoringUI/obj/Debug
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+**/.vs
+**/obj
+**/.mvn
+packages/
+**/bin
+Services/ScoreRound/.data/
+Services/CalcFunction/mvnw
+Services/CalcFunction/mvnw.cmd
+Services/CalcFunction/calc/.gitignore

@@ -8,13 +8,13 @@ namespace GuesstimateScoring
 {
     public class Guess
     {
-        public int PlayerId { get; set; }
-        public int GuessValue { get; set; }
-        public int OverUnderValue {get; set;}
+        public int playerId { get; set; }
+        public int guessValue { get; set; }
+        public int overUnderValue {get; set;}
 
         public Guess(int Id)
         {
-            PlayerId = Id;
+            playerId = Id;
         }
     }
 }
