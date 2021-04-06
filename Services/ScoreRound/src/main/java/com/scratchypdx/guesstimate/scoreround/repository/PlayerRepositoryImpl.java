@@ -68,6 +68,15 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     }
 
     @Override
+    public Player updatePlayer(Player player) {
+        JdbcTemplate template = new JdbcTemplate(dataSource);
+        template.update("UPDATE players.players SET score = ? where id = ?;\n",
+                player.getScore(),
+                player.getId());
+        return getPlayer(player.getId());
+    }
+    @Override
+
     public Player updatePlayerScore(Integer id, Integer score) {
         JdbcTemplate template = new JdbcTemplate(dataSource);
         template.update("UPDATE players.players SET score = ? where id = ?;\n",

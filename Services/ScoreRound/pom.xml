@@ -80,7 +80,7 @@
           <appServicePlanName>scratchy-scoreround-121608-sp</appServicePlanName>
           <resourceGroup>scratchy-scoreround-121608-rg</resourceGroup>
           <appName>scratchy-scoreround-121608-app</appName>
-          <pricingTier>P1v2</pricingTier>
+          <pricingTier>F1</pricingTier>
           <region>westus</region>
           <runtime>
             <os>linux</os>

@@ -4,3 +4,7 @@ CREATE TABLE `players`.`players` (
   `score` INT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
+
+SELECT * FROM PLAYERS.PLAYERS;
+
+DELETE FROM PLAYERS.PLAYERS;

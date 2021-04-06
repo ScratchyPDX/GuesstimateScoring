@@ -36,6 +36,11 @@ public class ScoreRoundServiceImpl implements ScoreRoundService {
     }
 
     @Override
+    public Player updatePlayer(Player player) {
+        return playerRepository.updatePlayer(player);
+    }
+
+    @Override
     public void deletePlayer(Integer id) {
         playerRepository.deletePlayer(id);
     }

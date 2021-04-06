@@ -11,6 +11,7 @@ public interface ScoreRoundService {
     public ArrayList<Player> getPlayers();
     public Player addPlayer(String playerNme);
     public Player addPlayer(Player player);
+    public Player updatePlayer(Player player);
     public void deletePlayer(Integer id);
     public void deleteAllPlayers();
     public ArrayList<Player> scoreRound(ArrayList<Guess> Guesses);

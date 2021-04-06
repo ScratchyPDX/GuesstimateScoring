@@ -35,9 +35,10 @@ public class ScoreRoundController {
     }
 
     @PutMapping("/player/score/all")
-    public ArrayList<Player> scoreRound(@RequestBody ArrayList<Guess> guesses) {
-        return scoreRoundService.scoreRound(guesses);
-    }
+    public ArrayList<Player> scoreRound(@RequestBody ArrayList<Guess> guesses) { return scoreRoundService.scoreRound(guesses); }
+
+    @PutMapping("/player")
+    public Player updatePlayer(@RequestBody Player player) { return scoreRoundService.updatePlayer(player); }
 
     @DeleteMapping("/player/{id}")
     public void deletePlayer(@PathVariable("id") Integer playerId)  {
